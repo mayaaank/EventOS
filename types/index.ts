@@ -267,3 +267,23 @@ export const JUDGING_CRITERIA = [
   'Scalability',
   'Creativity',
 ] as const
+
+// ─── REVIEWS ──────────────────────────────────────────────────────────────────
+export interface Review {
+  id: string
+  event_id: string
+  user_id: string
+  rating: number          // 1-5 stars
+  comment?: string
+  created_at: string
+  updated_at: string
+  // joined
+  user?: User
+  event?: Event
+}
+
+export interface CreateReviewPayload {
+  event_id: string
+  rating: number
+  comment?: string
+}

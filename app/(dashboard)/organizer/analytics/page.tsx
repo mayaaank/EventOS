@@ -1,7 +1,7 @@
 // Path: app/(dashboard)/organizer/analytics/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
-import { BarChart3, TrendingUp, Users, CheckCircle, Loader2 } from 'lucide-react'
+import { BarChart3, Users, CheckCircle, Loader2 } from 'lucide-react'
 import { eventsService } from '@/services/events.service'
 import { authService } from '@/services/auth.service'
 import { Event, EventAnalytics, User } from '@/types'
@@ -20,7 +20,7 @@ function HealthBar({ score }: { score: number }) {
 }
 
 export default function OrganizerAnalyticsPage() {
-  const [user, setUser] = useState<User | null>(null)
+  const [, setUser] = useState<User | null>(null)
   const [events, setEvents] = useState<Event[]>([])
   const [analytics, setAnalytics] = useState<Record<string, EventAnalytics>>({})
   const [loading, setLoading] = useState(true)

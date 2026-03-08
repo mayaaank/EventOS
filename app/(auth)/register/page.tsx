@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Loader2, ArrowRight, Check, Zap, Users, Mail, Lock, User } from 'lucide-react'
+import { Eye, EyeOff, Loader2, ArrowRight, Check, Mail, Lock, User } from 'lucide-react'
 import { authService } from '@/services/auth.service'
 import { UserRole } from '@/types'
 

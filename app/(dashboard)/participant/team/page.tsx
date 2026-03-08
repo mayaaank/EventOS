@@ -217,7 +217,7 @@ export default function ParticipantTeamPage() {
   useEffect(() => {
     tabLockedRef.current = false  // reset lock when event changes — re-allow auto-switch
     loadTeamData()
-  }, [selectedEventId, activeSearch])
+  }, [selectedEventId, activeSearch, loadTeamData])
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   function handleTabChange(key: Tab) {
@@ -406,7 +406,7 @@ export default function ParticipantTeamPage() {
           {!myTeam ? (
             <div className="card bg-white py-16 text-center">
               <Sparkles className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--ink-5)' }} />
-              <p className="font-semibold mb-1">You're not on a team yet</p>
+              <p className="font-semibold mb-1">You&apos;re not on a team yet</p>
               <p className="text-sm mb-5" style={{ color: 'var(--ink-3)' }}>
                 Create a new team or find one to join
               </p>
@@ -434,7 +434,7 @@ export default function ParticipantTeamPage() {
                         myTeam.status === 'COMPLETE' ? 'badge-blue' : 'badge-neutral'
                       }`}>{myTeam.status}</span>
                     <span className="badge badge-neutral">{myTeam.member_count}/{myTeam.max_size} members</span>
-                    {myTeam.leader_id === user?.id && <span className="badge badge-indigo" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Crown className="w-3 h-3" />You're the leader</span>}
+                    {myTeam.leader_id === user?.id && <span className="badge badge-indigo" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Crown className="w-3 h-3" />You&apos;re the leader</span>}
                   </div>
                 </div>
               </div>
@@ -542,7 +542,7 @@ export default function ParticipantTeamPage() {
             <>
               {activeSearch && (
                 <p className="text-xs mb-3" style={{ color: 'var(--ink-3)' }}>
-                  {teams.length} result{teams.length !== 1 ? 's' : ''} for "{activeSearch}"
+                  {teams.length} result{teams.length !== 1 ? 's' : ''} for &quot;{activeSearch}&quot;
                 </p>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -568,7 +568,7 @@ export default function ParticipantTeamPage() {
           {myTeam ? (
             <div className="card bg-white py-12 text-center">
               <Users className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--ink-5)' }} />
-              <p className="font-medium">You're already on a team for this event</p>
+              <p className="font-medium">You&apos;re already on a team for this event</p>
               <p className="text-sm mt-1" style={{ color: 'var(--ink-3)' }}>
                 Leave your current team first to create a new one
               </p>
@@ -593,7 +593,7 @@ export default function ParticipantTeamPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--ink-2)' }}>
-                    Skills you're looking for
+                    Skills you&apos;re looking for
                   </label>
                   <div className="flex gap-2">
                     <input value={createForm.skillInput}
@@ -678,7 +678,7 @@ export default function ParticipantTeamPage() {
                         {req.message && (
                           <div className="text-xs p-2.5 rounded-lg leading-relaxed"
                             style={{ background: 'var(--ink-6)', border: '1px solid var(--border)', color: 'var(--ink-2)' }}>
-                            "{req.message}"
+                            &quot;{req.message}&quot;
                           </div>
                         )}
                       </div>
@@ -713,7 +713,7 @@ export default function ParticipantTeamPage() {
             {myRequests.length === 0 ? (
               <div className="card bg-white py-10 text-center">
                 <p className="text-sm" style={{ color: 'var(--ink-3)' }}>
-                  You haven't requested to join any team yet
+                  You haven&apos;t requested to join any team yet
                 </p>
                 <button onClick={() => handleTabChange('find-team')}
                   className="text-sm mt-2 font-medium"
@@ -737,7 +737,7 @@ export default function ParticipantTeamPage() {
                       </p>
                       {req.message && (
                         <p className="text-xs mt-1 italic truncate" style={{ color: 'var(--ink-3)' }}>
-                          "{req.message}"
+                          &quot;{req.message}&quot;
                         </p>
                       )}
                     </div>

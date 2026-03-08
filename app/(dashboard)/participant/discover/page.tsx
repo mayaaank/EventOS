@@ -1,12 +1,12 @@
 // Path: app/(dashboard)/participant/discover/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
-import { Calendar, MapPin, Clock, Users, CheckCircle, Loader2, Plus, Search, BookmarkPlus, Flame, Zap, Code } from 'lucide-react'
+import { Calendar, MapPin, Clock, Users, CheckCircle, Loader2, Plus, Search, Zap } from 'lucide-react'
 import { authService } from '@/services/auth.service'
 import { eventsService } from '@/services/events.service'
 import { registrationsService } from '@/services/registrations.service'
 import { Event, Registration, User } from '@/types'
-import { formatDate, timeUntil } from '@/lib/utils'
+import { timeUntil } from '@/lib/utils'
 
 const FILTERS = ['All', 'Hackathons', 'Workshops', 'Meetups', 'Online', 'Free']
 

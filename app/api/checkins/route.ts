@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ data: checkin, error: null, success: true }, { status: 201 })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("POST /api/checkins exception:", e)
     return NextResponse.json({ data: null, error: 'Check-in failed', success: false }, { status: 500 })
   }

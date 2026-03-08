@@ -1,6 +1,6 @@
 // Path: app/(dashboard)/organizer/page.tsx
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Plus, X, Loader2, Calendar, MapPin, Users, BarChart3 } from 'lucide-react'
 import { eventsService } from '@/services/events.service'
 import { authService } from '@/services/auth.service'
@@ -41,9 +41,7 @@ export default function OrganizerPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => { load() }, [])
-
-  async function load() {
+  const load = useCallback(async () => {
     let u = user
     if (!u) {
       u = await authService.getCurrentUser()
@@ -61,7 +59,9 @@ export default function OrganizerPage() {
     }))
     setAnalytics(map)
     setLoading(false)
-  }
+  }, [user])
+
+  useEffect(() => { load() }, [load])
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault()
@@ -98,7 +98,7 @@ export default function OrganizerPage() {
         <div>
           <p className="label-xs mb-1">Organizer Dashboard</p>
           <h1 className="text-2xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em' }}>My Events</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--ink-3)' }}>Events you've created and manage</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--ink-3)' }}>Events you&apos;ve created and manage</p>
         </div>
         <button onClick={() => setShowCreate(true)} className="btn btn-primary px-4 py-2 text-sm">
           <Plus className="w-3.5 h-3.5" /> Create Event

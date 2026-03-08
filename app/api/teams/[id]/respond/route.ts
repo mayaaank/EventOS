@@ -43,7 +43,7 @@ export async function POST(
     }
 
     return NextResponse.json({ data: request, error: null, success: true })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("POST /api/teams/[id]/respond exception:", e)
     return NextResponse.json({ data: null, error: 'Failed to respond', success: false }, { status: 500 })
   }

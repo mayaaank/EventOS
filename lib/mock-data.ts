@@ -1,6 +1,6 @@
 // Path: lib/mock-data.ts
 import {
-  User, Event, Registration, Team, TeamMember,
+  User, Event, Registration, Team,
   Notification, CheckIn, TeamJoinRequest
 } from '@/types'
 

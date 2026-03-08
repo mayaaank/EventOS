@@ -1,6 +1,6 @@
 // Path: app/(dashboard)/organizer/checkin/page.tsx
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { QrCode, CheckCircle, XCircle, Loader2, Search } from 'lucide-react'
 import { checkinsService } from '@/services/checkins.service'
 import { eventsService } from '@/services/events.service'
@@ -32,14 +32,17 @@ export default function OrganizerCheckin() {
     init()
   }, [])
 
-  useEffect(() => { if (selectedId) loadCi() }, [selectedId])
-
-  async function loadCi() {
+  const loadCi = useCallback(async () => {
+    if (!selectedId) return
     setLoadingCi(true)
     const res = await checkinsService.getByEvent(selectedId)
     setCheckins(res.data ?? [])
     setLoadingCi(false)
-  }
+  }, [selectedId])
+
+  useEffect(() => {
+    loadCi()
+  }, [loadCi])
 
   async function handleCheckin(e: React.FormEvent) {
     e.preventDefault()

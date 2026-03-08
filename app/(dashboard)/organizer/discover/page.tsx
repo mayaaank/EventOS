@@ -13,7 +13,7 @@ const STATUS_BADGE: Record<string, string> = {
 }
 
 export default function OrganizerDiscoverPage() {
-  const [user, setUser] = useState<User | null>(null)
+  const [, setUser] = useState<User | null>(null)
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -46,7 +46,7 @@ export default function OrganizerDiscoverPage() {
         <div>
           <p className="label-xs mb-1">Organizer</p>
           <h1 className="text-2xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em' }}>Discover Events</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--ink-3)' }}>Other organizers' live events</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--ink-3)' }}>Other organizers&apos; live events</p>
         </div>
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--ink-4)' }} />

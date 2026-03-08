@@ -197,19 +197,19 @@ const SECTIONS: EventSection[] = [
     key: 'hackathon', label: 'Hackathons',
     icon: <Flame className="w-4 h-4" />,
     iconBg: '#FEE2D5', iconColor: '#C45E1F',
-    keywords: ['hackathon','hack','build','code','sprint'],
+    keywords: ['hackathon', 'hack', 'build', 'code', 'sprint'],
   },
   {
     key: 'tech', label: 'Tech Events',
     icon: <Cpu className="w-4 h-4" />,
     iconBg: '#E0F2FE', iconColor: '#0369A1',
-    keywords: ['tech','workshop','bootcamp','webinar','conference','meetup','seminar'],
+    keywords: ['tech', 'workshop', 'bootcamp', 'webinar', 'conference', 'meetup', 'seminar'],
   },
   {
     key: 'summit', label: 'Summits',
     icon: <Globe2 className="w-4 h-4" />,
     iconBg: '#D1FAE5', iconColor: '#065F46',
-    keywords: ['summit','forum','expo','symposium','congress','gala'],
+    keywords: ['summit', 'forum', 'expo', 'symposium', 'congress', 'gala'],
   },
 ]
 
@@ -227,9 +227,9 @@ const STATUS_BADGE: Record<string, string> = {
 
 /* ─── Card ───────────────────────────────────────────────────────────────── */
 function EventCard({ event, delayClass = '' }: { event: Event; delayClass?: string }) {
-  const fill       = Math.min(((event.registration_count ?? 0) / event.max_participants) * 100, 100)
+  const fill = Math.min(((event.registration_count ?? 0) / event.max_participants) * 100, 100)
   const almostFull = fill > 80
-  const spotsLeft  = event.max_participants - (event.registration_count ?? 0)
+  const spotsLeft = event.max_participants - (event.registration_count ?? 0)
 
   return (
     <div className={`ecard fade-up ${delayClass}`}>
@@ -248,12 +248,14 @@ function EventCard({ event, delayClass = '' }: { event: Event; delayClass?: stri
             width: 22, height: 22, borderRadius: 7, flexShrink: 0,
             background: 'linear-gradient(135deg,var(--brand),var(--brand-deep))',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'white', fontSize: 10, fontWeight: 700, 
+            color: 'white', fontSize: 10, fontWeight: 700,
           }}>
             {event.organizer?.name?.[0]?.toUpperCase() ?? '?'}
           </div>
-          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--ink-3)', flex: 1, overflow: 'hidden',
-            textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span style={{
+            fontSize: 12, fontWeight: 500, color: 'var(--ink-3)', flex: 1, overflow: 'hidden',
+            textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+          }}>
             {event.organizer?.name ?? 'Organizer'}
           </span>
           <span className={`badge ${STATUS_BADGE[event.status] ?? 'badge-neutral'}`}>
@@ -292,7 +294,7 @@ function EventCard({ event, delayClass = '' }: { event: Event; delayClass?: stri
               <span style={{ flex: 1 }}>{text}</span>
               {pill && (
                 <span style={{
-                  fontSize: 10, fontWeight: 600, 
+                  fontSize: 10, fontWeight: 600,
                   padding: '2px 7px', borderRadius: 6,
                   background: 'var(--brand-pale)', color: 'var(--brand-deep)',
                   border: '1px solid var(--brand-mid)',
@@ -329,7 +331,7 @@ function EventCard({ event, delayClass = '' }: { event: Event; delayClass?: stri
 
         {/* CTA */}
         <Link href="/register" className="btn-brand" style={{ width: '100%' }}>
-          Register — it's free <ArrowRight className="w-3.5 h-3.5" />
+          Register — it&apos;s free <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </div>
@@ -339,14 +341,16 @@ function EventCard({ event, delayClass = '' }: { event: Event; delayClass?: stri
 /* ─── Section block ──────────────────────────────────────────────────────── */
 function SectionBlock({ section, events }: { section: EventSection; events: Event[] }) {
   if (events.length === 0) return null
-  const delays = ['d1','d2','d3','d4']
+  const delays = ['d1', 'd2', 'd3', 'd4']
   return (
     <section style={{ marginBottom: 56 }}>
       {/* Section header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
         {/* Left accent bar */}
-        <div style={{ width: 4, height: 28, borderRadius: 2,
-          background: 'linear-gradient(180deg,var(--brand),var(--brand-glow))', flexShrink: 0 }} />
+        <div style={{
+          width: 4, height: 28, borderRadius: 2,
+          background: 'linear-gradient(180deg,var(--brand),var(--brand-glow))', flexShrink: 0
+        }} />
         <div className="sec-icon" style={{ background: section.iconBg, color: section.iconColor }}>
           {section.icon}
         </div>
@@ -354,7 +358,7 @@ function SectionBlock({ section, events }: { section: EventSection; events: Even
           {section.label}
         </h2>
         <span style={{
-          fontSize: 11, fontWeight: 600, 
+          fontSize: 11, fontWeight: 600,
           padding: '3px 9px', borderRadius: 99,
           background: 'var(--brand-pale)', color: 'var(--brand-deep)',
           border: '1px solid var(--brand-mid)',
@@ -378,19 +382,21 @@ function SectionBlock({ section, events }: { section: EventSection; events: Even
 function SkeletonGrid() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 16 }}>
-      {[1,2,3,4,5,6].map(i => (
+      {[1, 2, 3, 4, 5, 6].map(i => (
         <div key={i} className="ecard" style={{ minHeight: 340 }}>
           <div style={{ height: 3, background: 'var(--ink-6)' }} />
           <div style={{ padding: 20 }}>
-            {([[50,10],[80,14],[95,11],[70,11]] as [number,number][]).map(([w,h], j) => (
+            {([[50, 10], [80, 14], [95, 11], [70, 11]] as [number, number][]).map(([w, h], j) => (
               <div key={j} style={{
                 height: h, width: `${w}%`, borderRadius: 6,
                 background: 'var(--ink-6)', marginBottom: 10,
                 animation: 'pulse 1.5s ease infinite',
               }} />
             ))}
-            <div style={{ height: 38, borderRadius: 10, background: 'var(--ink-6)', marginTop: 24,
-              animation: 'pulse 1.5s ease infinite' }} />
+            <div style={{
+              height: 38, borderRadius: 10, background: 'var(--ink-6)', marginTop: 24,
+              animation: 'pulse 1.5s ease infinite'
+            }} />
           </div>
         </div>
       ))}
@@ -402,10 +408,10 @@ function SkeletonGrid() {
 type SortOption = 'soonest' | 'newest' | 'most-registered'
 
 export default function EventsPage() {
-  const [events,  setEvents]  = useState<Event[]>([])
+  const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
-  const [search,  setSearch]  = useState('')
-  const [sort,    setSort]    = useState<SortOption>('soonest')
+  const [search, setSearch] = useState('')
+  const [sort, setSort] = useState<SortOption>('soonest')
 
   useEffect(() => {
     Promise.all([
@@ -433,9 +439,9 @@ export default function EventsPage() {
       )
     }
 
-    if (sort === 'newest')           list.sort((a,b) => +new Date(b.created_at) - +new Date(a.created_at))
-    else if (sort === 'soonest')     list.sort((a,b) => +new Date(a.start_date) - +new Date(b.start_date))
-    else if (sort === 'most-registered') list.sort((a,b) => (b.registration_count ?? 0) - (a.registration_count ?? 0))
+    if (sort === 'newest') list.sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))
+    else if (sort === 'soonest') list.sort((a, b) => +new Date(a.start_date) - +new Date(b.start_date))
+    else if (sort === 'most-registered') list.sort((a, b) => (b.registration_count ?? 0) - (a.registration_count ?? 0))
 
     const groups: Record<string, Event[]> = {}
     for (const s of SECTIONS) groups[s.key] = []
@@ -446,7 +452,7 @@ export default function EventsPage() {
     return groups
   }, [events, search, sort])
 
-  const totalShown     = Object.values(grouped).flat().length
+  const totalShown = Object.values(grouped).flat().length
   const activeSections = SECTIONS.filter(s => (grouped[s.key]?.length ?? 0) > 0).length
 
   return (
@@ -458,8 +464,10 @@ export default function EventsPage() {
         <nav className="nav-glass" style={{
           position: 'sticky', top: 0, zIndex: 50,
         }}>
-          <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 24px',
-            height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{
+            maxWidth: 1120, margin: '0 auto', padding: '0 24px',
+            height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+          }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}>
                 <div className="logo-bg" style={{
@@ -484,195 +492,209 @@ export default function EventsPage() {
 
         <div style={{ position: 'relative', overflow: 'hidden' }}>
           {/* Background orbs */}
-          <div className="orb" style={{ width:500, height:500,
-            background:'radial-gradient(circle,rgba(229,116,49,0.32) 0%,transparent 68%)',
-            top:-160, right:-120, zIndex:0 }} />
-          <div className="orb" style={{ width:420, height:420,
-            background:'radial-gradient(circle,rgba(244,162,97,0.26) 0%,transparent 68%)',
-            top:200, left:-140, zIndex:0 }} />
-          <div className="orb" style={{ width:380, height:380,
-            background:'radial-gradient(circle,rgba(229,116,49,0.20) 0%,transparent 68%)',
-            bottom:100, right:80, zIndex:0 }} />
+          <div className="orb" style={{
+            width: 500, height: 500,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.32) 0%,transparent 68%)',
+            top: -160, right: -120, zIndex: 0
+          }} />
+          <div className="orb" style={{
+            width: 420, height: 420,
+            background: 'radial-gradient(circle,rgba(244,162,97,0.26) 0%,transparent 68%)',
+            top: 200, left: -140, zIndex: 0
+          }} />
+          <div className="orb" style={{
+            width: 380, height: 380,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.20) 0%,transparent 68%)',
+            bottom: 100, right: 80, zIndex: 0
+          }} />
 
-        <div style={{ maxWidth: 1120, margin: '0 auto', padding: '40px 24px 80px', position: 'relative', zIndex: 1 }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto', padding: '40px 24px 80px', position: 'relative', zIndex: 1 }}>
 
-          {/* ── Page header ── */}
-          <div className="fade-up" style={{ marginBottom: 36 }}>
-            <Link href="/" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              fontSize: 13, color: 'var(--ink-3)', textDecoration: 'none', marginBottom: 16,
-              transition: 'color 0.15s',
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--brand)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}>
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to home
-            </Link>
-
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-              flexWrap: 'wrap', gap: 16 }}>
-              <div>
-                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
-                  textTransform: 'uppercase', color: 'var(--brand)', marginBottom: 6 }}>All Events</p>
-                <h1 className="font-bold tracking-tight" style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1 }}>
-                  Browse Events
-                </h1>
-                <p style={{ fontSize: 13, color: 'var(--ink-3)', marginTop: 8 }}>
-                  {loading
-                    ? 'Loading…'
-                    : `${totalShown} open event${totalShown !== 1 ? 's' : ''} across ${activeSections} categor${activeSections !== 1 ? 'ies' : 'y'}`}
-                </p>
-              </div>
-
-              {/* Sign-up nudge */}
-              <div className="nudge-card" style={{
-                padding: '12px 18px', borderRadius: 14,
-                border: '1.5px solid var(--brand-mid)',
-                display: 'flex', alignItems: 'center', gap: 12,
-              }}>
-                <span style={{ fontSize: 13, color: 'var(--brand-deep)', fontWeight: 500 }}>
-                  Sign up free to register for any event
-                </span>
-                <Link href="/register" className="btn-brand" style={{ fontSize: 12, padding: '7px 14px', borderRadius: 8 }}>
-                  Sign up <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Search + Sort ── */}
-          <div className="fade-up d1" style={{ display: 'flex', gap: 10, marginBottom: 44, flexWrap: 'wrap' }}>
-            <div className="search-wrap" style={{ flex: 1, minWidth: 220 }}>
-              <Search style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)',
-                width: 15, height: 15, color: 'var(--ink-4)', pointerEvents: 'none' }} />
-              <input
-                className="search-input"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Search events, locations, tags, organizers…"
-              />
-              {search && (
-                <button onClick={() => setSearch('')} style={{
-                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-4)',
-                  display: 'flex', alignItems: 'center',
-                }}>
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-
-            <select
-              value={sort}
-              onChange={e => setSort(e.target.value as SortOption)}
-              style={{
-                padding: '10px 14px', borderRadius: 12, border: '1.5px solid var(--ink-5)',
-                background: 'var(--white)', color: 'var(--ink)', fontSize: 13,
-                 cursor: 'pointer', outline: 'none',
-                boxShadow: 'var(--shadow-sm)',
+            {/* ── Page header ── */}
+            <div className="fade-up" style={{ marginBottom: 36 }}>
+              <Link href="/" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                fontSize: 13, color: 'var(--ink-3)', textDecoration: 'none', marginBottom: 16,
+                transition: 'color 0.15s',
               }}
-            >
-              <option value="soonest">Starting soonest</option>
-              <option value="newest">Newest first</option>
-              <option value="most-registered">Most popular</option>
-            </select>
-          </div>
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--brand)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}>
+                <ArrowLeft className="w-3.5 h-3.5" /> Back to home
+              </Link>
 
-          {/* ── Content ── */}
-          {loading ? (
-            <SkeletonGrid />
-          ) : totalShown === 0 ? (
-            <div style={{
-              textAlign: 'center', padding: '80px 24px',
-              borderRadius: 20, background: 'var(--white)', border: '1.5px solid var(--ink-6)',
-            }}>
-              <Calendar style={{ width: 48, height: 48, color: 'var(--ink-5)', margin: '0 auto 16px' }} />
-              <p className="font-bold tracking-tight" style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
-                {search ? 'No events match your search' : 'No open events right now'}
-              </p>
-              <p style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 24 }}>
-                {search ? 'Try a different keyword' : 'Check back soon, or host your own!'}
-              </p>
-              {search ? (
-                <button onClick={() => setSearch('')} className="btn-ghost">Clear search</button>
-              ) : (
-                <Link href="/register" className="btn-brand">
-                  Host an event <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              )}
-            </div>
-          ) : (
-            SECTIONS.map(sec => (
-              <SectionBlock key={sec.key} section={sec} events={grouped[sec.key] ?? []} />
-            ))
-          )}
-
-          {/* ── Bottom CTA ── */}
-          {!loading && totalShown > 0 && (
-            <div style={{
-              position: 'relative', overflow: 'hidden', marginTop: 24,
-              padding: '52px 40px', borderRadius: 24, textAlign: 'center',
-              background: 'linear-gradient(135deg,var(--brand) 0%,var(--brand-deep) 100%)',
-              boxShadow: 'var(--shadow-brand)',
-            }}>
-              {/* Decorative circles */}
-              {[
-                { top: -60, right: -60, size: 220, opacity: 0.07 },
-                { bottom: -40, left: -40, size: 160, opacity: 0.05 },
-              ].map((s, i) => (
-                <div key={i} style={{
-                  position: 'absolute', borderRadius: '50%',
-                  width: s.size, height: s.size,
-                  background: `rgba(255,255,255,${s.opacity})`,
-                  top: 'top' in s ? s.top : undefined,
-                  bottom: 'bottom' in s ? s.bottom : undefined,
-                  left: 'left' in s ? s.left : undefined,
-                  right: 'right' in s ? s.right : undefined,
-                  pointerEvents: 'none',
-                }} />
-              ))}
-
-              <h2 className="font-bold tracking-tight" style={{
-                fontSize: 26, fontWeight: 800, color: 'white',
-                letterSpacing: '-0.03em', marginBottom: 10, position: 'relative',
+              <div style={{
+                display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+                flexWrap: 'wrap', gap: 16
               }}>
-                Ready to join an event?
-              </h2>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', marginBottom: 28, position: 'relative' }}>
-                Create a free account in under a minute — no credit card needed.
-              </p>
-              <div style={{ display: 'flex', gap: 10, justifyContent: 'center', position: 'relative' }}>
-                <Link href="/register" style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  background: 'white', color: 'var(--brand-deep)',
-                  fontWeight: 700, fontSize: 14,
-                  padding: '11px 24px', borderRadius: 12, textDecoration: 'none',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.15)', transition: 'transform 0.15s',
-                }}
-                  onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                  onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
-                  Sign up free <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link href="/login" style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  background: 'rgba(255,255,255,0.15)', color: 'white',
-                  fontWeight: 600, fontSize: 14,
-                  padding: '11px 24px', borderRadius: 12, textDecoration: 'none',
-                  border: '1.5px solid rgba(255,255,255,0.3)', transition: 'background 0.15s',
-                }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.15)')}>
-                  Sign in
-                </Link>
+                <div>
+                  <p style={{
+                    fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
+                    textTransform: 'uppercase', color: 'var(--brand)', marginBottom: 6
+                  }}>All Events</p>
+                  <h1 className="font-bold tracking-tight" style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1 }}>
+                    Browse Events
+                  </h1>
+                  <p style={{ fontSize: 13, color: 'var(--ink-3)', marginTop: 8 }}>
+                    {loading
+                      ? 'Loading…'
+                      : `${totalShown} open event${totalShown !== 1 ? 's' : ''} across ${activeSections} categor${activeSections !== 1 ? 'ies' : 'y'}`}
+                  </p>
+                </div>
+
+                {/* Sign-up nudge */}
+                <div className="nudge-card" style={{
+                  padding: '12px 18px', borderRadius: 14,
+                  border: '1.5px solid var(--brand-mid)',
+                  display: 'flex', alignItems: 'center', gap: 12,
+                }}>
+                  <span style={{ fontSize: 13, color: 'var(--brand-deep)', fontWeight: 500 }}>
+                    Sign up free to register for any event
+                  </span>
+                  <Link href="/register" className="btn-brand" style={{ fontSize: 12, padding: '7px 14px', borderRadius: 8 }}>
+                    Sign up <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </div>
             </div>
-          )}
-        </div>
+
+            {/* ── Search + Sort ── */}
+            <div className="fade-up d1" style={{ display: 'flex', gap: 10, marginBottom: 44, flexWrap: 'wrap' }}>
+              <div className="search-wrap" style={{ flex: 1, minWidth: 220 }}>
+                <Search style={{
+                  position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)',
+                  width: 15, height: 15, color: 'var(--ink-4)', pointerEvents: 'none'
+                }} />
+                <input
+                  className="search-input"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search events, locations, tags, organizers…"
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} style={{
+                    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                    background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-4)',
+                    display: 'flex', alignItems: 'center',
+                  }}>
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              <select
+                value={sort}
+                onChange={e => setSort(e.target.value as SortOption)}
+                style={{
+                  padding: '10px 14px', borderRadius: 12, border: '1.5px solid var(--ink-5)',
+                  background: 'var(--white)', color: 'var(--ink)', fontSize: 13,
+                  cursor: 'pointer', outline: 'none',
+                  boxShadow: 'var(--shadow-sm)',
+                }}
+              >
+                <option value="soonest">Starting soonest</option>
+                <option value="newest">Newest first</option>
+                <option value="most-registered">Most popular</option>
+              </select>
+            </div>
+
+            {/* ── Content ── */}
+            {loading ? (
+              <SkeletonGrid />
+            ) : totalShown === 0 ? (
+              <div style={{
+                textAlign: 'center', padding: '80px 24px',
+                borderRadius: 20, background: 'var(--white)', border: '1.5px solid var(--ink-6)',
+              }}>
+                <Calendar style={{ width: 48, height: 48, color: 'var(--ink-5)', margin: '0 auto 16px' }} />
+                <p className="font-bold tracking-tight" style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
+                  {search ? 'No events match your search' : 'No open events right now'}
+                </p>
+                <p style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 24 }}>
+                  {search ? 'Try a different keyword' : 'Check back soon, or host your own!'}
+                </p>
+                {search ? (
+                  <button onClick={() => setSearch('')} className="btn-ghost">Clear search</button>
+                ) : (
+                  <Link href="/register" className="btn-brand">
+                    Host an event <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                )}
+              </div>
+            ) : (
+              SECTIONS.map(sec => (
+                <SectionBlock key={sec.key} section={sec} events={grouped[sec.key] ?? []} />
+              ))
+            )}
+
+            {/* ── Bottom CTA ── */}
+            {!loading && totalShown > 0 && (
+              <div style={{
+                position: 'relative', overflow: 'hidden', marginTop: 24,
+                padding: '52px 40px', borderRadius: 24, textAlign: 'center',
+                background: 'linear-gradient(135deg,var(--brand) 0%,var(--brand-deep) 100%)',
+                boxShadow: 'var(--shadow-brand)',
+              }}>
+                {/* Decorative circles */}
+                {[
+                  { top: -60, right: -60, size: 220, opacity: 0.07 },
+                  { bottom: -40, left: -40, size: 160, opacity: 0.05 },
+                ].map((s, i) => (
+                  <div key={i} style={{
+                    position: 'absolute', borderRadius: '50%',
+                    width: s.size, height: s.size,
+                    background: `rgba(255,255,255,${s.opacity})`,
+                    top: 'top' in s ? s.top : undefined,
+                    bottom: 'bottom' in s ? s.bottom : undefined,
+                    left: 'left' in s ? s.left : undefined,
+                    right: 'right' in s ? s.right : undefined,
+                    pointerEvents: 'none',
+                  }} />
+                ))}
+
+                <h2 className="font-bold tracking-tight" style={{
+                  fontSize: 26, fontWeight: 800, color: 'white',
+                  letterSpacing: '-0.03em', marginBottom: 10, position: 'relative',
+                }}>
+                  Ready to join an event?
+                </h2>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', marginBottom: 28, position: 'relative' }}>
+                  Create a free account in under a minute — no credit card needed.
+                </p>
+                <div style={{ display: 'flex', gap: 10, justifyContent: 'center', position: 'relative' }}>
+                  <Link href="/register" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    background: 'white', color: 'var(--brand-deep)',
+                    fontWeight: 700, fontSize: 14,
+                    padding: '11px 24px', borderRadius: 12, textDecoration: 'none',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.15)', transition: 'transform 0.15s',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                    onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
+                    Sign up free <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link href="/login" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    background: 'rgba(255,255,255,0.15)', color: 'white',
+                    fontWeight: 600, fontSize: 14,
+                    padding: '11px 24px', borderRadius: 12, textDecoration: 'none',
+                    border: '1.5px solid rgba(255,255,255,0.3)', transition: 'background 0.15s',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.15)')}>
+                    Sign in
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>{/* end orb wrapper */}
 
         {/* ── Footer ── */}
         <footer className="footer-glass" style={{ borderTop: '1px solid rgba(229,116,49,0.18)', padding: '28px 24px' }}>
-          <div style={{ maxWidth: 1120, margin: '0 auto',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{
+            maxWidth: 1120, margin: '0 auto',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+          }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div className="logo-bg" style={{
                 width: 26, height: 26, borderRadius: 8,

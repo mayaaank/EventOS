@@ -179,28 +179,28 @@ const CSS = `
 
 /* ─── Data ───────────────────────────────────────────────────────────────── */
 const features = [
-  { icon: Users,     title: 'Team Engine',       desc: 'Search teams, send join requests, leader accepts or rejects. One team per event.' },
-  { icon: QrCode,    title: 'QR Check-In',        desc: 'Token-based check-in per event. Each organizer manages their own attendees.' },
-  { icon: BarChart3, title: 'Live Analytics',      desc: 'Health scores, velocity, and team formation rate — all scoped per event.' },
-  { icon: Shield,    title: 'Scoped Permissions',  desc: 'Organizers own only their events. No cross-event admin access.' },
-  { icon: GitBranch, title: 'Global Platform',     desc: 'Any user can host events or join them. Different organizer per event, always.' },
-  { icon: Users,     title: 'Team Requests',       desc: 'Leaders see incoming requests with messages, and accept or reject per slot.' },
+  { icon: Users, title: 'Team Engine', desc: 'Search teams, send join requests, leader accepts or rejects. One team per event.' },
+  { icon: QrCode, title: 'QR Check-In', desc: 'Token-based check-in per event. Each organizer manages their own attendees.' },
+  { icon: BarChart3, title: 'Live Analytics', desc: 'Health scores, velocity, and team formation rate — all scoped per event.' },
+  { icon: Shield, title: 'Scoped Permissions', desc: 'Organizers own only their events. No cross-event admin access.' },
+  { icon: GitBranch, title: 'Global Platform', desc: 'Any user can host events or join them. Different organizer per event, always.' },
+  { icon: Users, title: 'Team Requests', desc: 'Leaders see incoming requests with messages, and accept or reject per slot.' },
 ]
 
 const demos = [
   {
     role: 'Organizer', email: 'organizer@eventos.dev', pass: 'org123',
     gradient: 'linear-gradient(135deg,#7C3AED,#5B21B6)', glow: 'rgba(124,58,237,0.28)',
-    perks: ['Create & publish events','Manage check-in for your events','View analytics scoped to your events'],
+    perks: ['Create & publish events', 'Manage check-in for your events', 'View analytics scoped to your events'],
   },
   {
     role: 'Participant', email: 'participant@eventos.dev', pass: 'part123',
     gradient: 'linear-gradient(135deg,#3B82F6,#1D4ED8)', glow: 'rgba(59,130,246,0.28)',
-    perks: ['Register for any public event','Create or search teams','Send join requests with a message'],
+    perks: ['Register for any public event', 'Create or search teams', 'Send join requests with a message'],
   },
 ]
 
-const STATUS_BADGE: Record<string,string> = { PUBLISHED:'badge-blue', ONGOING:'badge-green' }
+const STATUS_BADGE: Record<string, string> = { PUBLISHED: 'badge-blue', ONGOING: 'badge-green' }
 
 /* ─── Event card ─────────────────────────────────────────────────────────── */
 function EventCard({ event }: { event: Event }) {
@@ -236,11 +236,13 @@ function EventCard({ event }: { event: Event }) {
 
       <div className="space-y-1 mb-3">
         {[
-          { Icon: MapPin,   text: event.location },
+          { Icon: MapPin, text: event.location },
           { Icon: Calendar, text: formatDate(event.start_date) },
-          { Icon: Users,    text: event.type === 'TEAM'
+          {
+            Icon: Users, text: event.type === 'TEAM'
               ? `Teams of ${event.min_team_size ?? 2}–${event.max_team_size ?? 4}`
-              : 'Individual' },
+              : 'Individual'
+          },
         ].map(({ Icon, text }) => (
           <div key={text} className="flex items-center gap-2 text-xs" style={{ color: 'var(--ink-3)' }}>
             <Icon className="w-3 h-3 flex-shrink-0" style={{ color: 'var(--accent)' }} />{text}
@@ -268,7 +270,7 @@ function EventCard({ event }: { event: Event }) {
       </div>
 
       <Link href="/register" className="btn btn-primary py-2 text-sm w-full rounded-xl text-center">
-        Register — it's free <ArrowRight className="w-3.5 h-3.5" />
+        Register — it&apos;s free <ArrowRight className="w-3.5 h-3.5" />
       </Link>
     </div>
   )
@@ -283,7 +285,7 @@ function SkeletonCard() {
       <div className="h-4 rounded mb-2" style={{ background: 'var(--ink-5)', width: '80%' }} />
       <div className="h-3 rounded mb-1" style={{ background: 'var(--ink-5)', width: '95%' }} />
       <div className="h-3 rounded mb-6" style={{ background: 'var(--ink-5)', width: '70%' }} />
-      {['60%','45%','55%'].map(w => (
+      {['60%', '45%', '55%'].map(w => (
         <div key={w} className="h-3 rounded mb-2" style={{ background: 'var(--ink-5)', width: w }} />
       ))}
       <div className="h-9 rounded-xl mt-4" style={{ background: 'var(--ink-5)' }} />
@@ -293,11 +295,11 @@ function SkeletonCard() {
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
-  const [events,    setEvents]    = useState<Event[]>([])
+  const [events, setEvents] = useState<Event[]>([])
   const [evLoading, setEvLoading] = useState(true)
-  const eventsRef  = useRef<HTMLElement>(null)
-  const scrollRef  = useRef<HTMLDivElement>(null)
-  const [canScrollLeft,  setCanScrollLeft]  = useState(false)
+  const eventsRef = useRef<HTMLElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
 
   useEffect(() => {
@@ -348,7 +350,7 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center gap-2">
               <button onClick={scrollToEvents} className="btn btn-ghost px-4 py-2 text-sm">Browse Events</button>
-              <Link href="/login"    className="btn btn-ghost px-4 py-2 text-sm">Sign in</Link>
+              <Link href="/login" className="btn btn-ghost px-4 py-2 text-sm">Sign in</Link>
               <Link href="/register" className="btn btn-primary px-4 py-2 text-sm">
                 Get started <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -359,15 +361,21 @@ export default function LandingPage() {
         {/* ── Hero ── */}
         <section className="pt-24 pb-20 px-6 relative overflow-hidden">
           {/* Blur orbs */}
-          <div className="orb" style={{ width:620, height:620,
-            background:'radial-gradient(circle,rgba(229,116,49,0.42) 0%,transparent 68%)',
-            top:-160, left:-130 }} />
-          <div className="orb" style={{ width:500, height:500,
-            background:'radial-gradient(circle,rgba(244,162,97,0.36) 0%,transparent 68%)',
-            top:20, right:-110 }} />
-          <div className="orb" style={{ width:380, height:380,
-            background:'radial-gradient(circle,rgba(229,116,49,0.28) 0%,transparent 68%)',
-            bottom:-80, left:'38%' }} />
+          <div className="orb" style={{
+            width: 620, height: 620,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.42) 0%,transparent 68%)',
+            top: -160, left: -130
+          }} />
+          <div className="orb" style={{
+            width: 500, height: 500,
+            background: 'radial-gradient(circle,rgba(244,162,97,0.36) 0%,transparent 68%)',
+            top: 20, right: -110
+          }} />
+          <div className="orb" style={{
+            width: 380, height: 380,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.28) 0%,transparent 68%)',
+            bottom: -80, left: '38%'
+          }} />
 
           <div className="max-w-4xl mx-auto text-center relative">
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-8 text-xs font-semibold fade-in accent-chip">
@@ -401,8 +409,8 @@ export default function LandingPage() {
           <div className="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-8 text-center">
             {[
               { num: '1:1', label: 'Organizer per event' },
-              { num: '2',   label: 'Roles: Organizer & Participant' },
-              { num: '∞',   label: 'Events per organizer' },
+              { num: '2', label: 'Roles: Organizer & Participant' },
+              { num: '∞', label: 'Events per organizer' },
             ].map(({ num, label }) => (
               <div key={label}>
                 <div className="mono text-3xl font-semibold mb-1"
@@ -415,9 +423,11 @@ export default function LandingPage() {
 
         {/* ── Events Carousel ── */}
         <section ref={eventsRef} className="py-20 relative overflow-hidden">
-          <div className="orb" style={{ width:480, height:480,
-            background:'radial-gradient(circle,rgba(229,116,49,0.22) 0%,transparent 68%)',
-            top:-100, right:-100 }} />
+          <div className="orb" style={{
+            width: 480, height: 480,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.22) 0%,transparent 68%)',
+            top: -100, right: -100
+          }} />
 
           <div className="max-w-6xl mx-auto px-6 flex items-end justify-between mb-8 relative">
             <div>
@@ -432,16 +442,16 @@ export default function LandingPage() {
             <div className="flex items-center gap-3">
               {!evLoading && events.length > 0 && (
                 <div className="flex gap-1.5">
-                  {(['left','right'] as const).map(dir => {
+                  {(['left', 'right'] as const).map(dir => {
                     const can = dir === 'left' ? canScrollLeft : canScrollRight
                     return (
                       <button key={dir} onClick={() => scroll(dir)} disabled={!can}
                         className="w-8 h-8 rounded-lg border flex items-center justify-center transition-all"
                         style={{
                           borderColor: can ? 'var(--border-strong)' : 'var(--border)',
-                          color:       can ? 'var(--ink-2)' : 'var(--ink-5)',
-                          background:  can ? 'white' : 'var(--ink-6)',
-                          cursor:      can ? 'pointer' : 'default',
+                          color: can ? 'var(--ink-2)' : 'var(--ink-5)',
+                          background: can ? 'white' : 'var(--ink-6)',
+                          cursor: can ? 'pointer' : 'default',
                         }}>
                         {dir === 'left'
                           ? <ChevronLeft className="w-4 h-4" />
@@ -460,34 +470,34 @@ export default function LandingPage() {
           <div className="relative">
             {evLoading ? (
               <div className="flex gap-4 px-6 overflow-hidden">
-                {[1,2,3,4].map(i => <SkeletonCard key={i} />)}
+                {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
               </div>
             ) : events.length === 0 ? (
               <div className="mx-6 card py-16 text-center">
                 <Calendar className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--ink-5)' }} />
                 <p className="font-semibold mb-1">No open events right now</p>
                 <p className="text-sm mb-4" style={{ color: 'var(--ink-3)' }}>Check back soon, or create one yourself.</p>
-                <Link href="/register" className="btn btn-primary px-4 py-2 text-sm mx-auto" style={{ display:'inline-flex' }}>
+                <Link href="/register" className="btn btn-primary px-4 py-2 text-sm mx-auto" style={{ display: 'inline-flex' }}>
                   Host an event
                 </Link>
               </div>
             ) : (
               <>
-                {canScrollLeft  && <div className="fade-l absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" />}
+                {canScrollLeft && <div className="fade-l absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" />}
                 {canScrollRight && <div className="fade-r absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none" />}
                 <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-3 hide-scroll"
-                  style={{ paddingLeft:24, paddingRight:24, WebkitOverflowScrolling:'touch' }}>
+                  style={{ paddingLeft: 24, paddingRight: 24, WebkitOverflowScrolling: 'touch' }}>
                   {events.map(event => <EventCard key={event.id} event={event} />)}
                   <Link href="/events"
                     className="end-card flex-shrink-0 flex flex-col items-center justify-center gap-3 card-hover"
-                    style={{ width:200, minHeight:340, borderRadius:14, textDecoration:'none', color:'inherit' }}>
+                    style={{ width: 200, minHeight: 340, borderRadius: 14, textDecoration: 'none', color: 'inherit' }}>
                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                      style={{ background:'var(--accent-light)', border:'1px solid var(--accent-mid)' }}>
-                      <ArrowRight className="w-6 h-6" style={{ color:'var(--accent)' }} />
+                      style={{ background: 'var(--accent-light)', border: '1px solid var(--accent-mid)' }}>
+                      <ArrowRight className="w-6 h-6" style={{ color: 'var(--accent)' }} />
                     </div>
                     <div className="text-center px-4">
                       <p className="font-semibold text-sm mb-1">See all events</p>
-                      <p className="text-xs" style={{ color:'var(--ink-3)' }}>Browse, filter & search every open event</p>
+                      <p className="text-xs" style={{ color: 'var(--ink-3)' }}>Browse, filter & search every open event</p>
                     </div>
                   </Link>
                 </div>
@@ -498,31 +508,37 @@ export default function LandingPage() {
 
         {/* ── Features ── */}
         <section className="py-20 px-6 relative overflow-hidden"
-          style={{ background:'linear-gradient(180deg,var(--surface) 0%,rgba(249,216,192,0.38) 100%)' }}>
-          <div className="orb" style={{ width:580, height:580,
-            background:'radial-gradient(circle,rgba(229,116,49,0.26) 0%,transparent 68%)',
-            bottom:-150, left:-100 }} />
-          <div className="orb" style={{ width:420, height:420,
-            background:'radial-gradient(circle,rgba(244,162,97,0.22) 0%,transparent 68%)',
-            top:-80, right:60 }} />
+          style={{ background: 'linear-gradient(180deg,var(--surface) 0%,rgba(249,216,192,0.38) 100%)' }}>
+          <div className="orb" style={{
+            width: 580, height: 580,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.26) 0%,transparent 68%)',
+            bottom: -150, left: -100
+          }} />
+          <div className="orb" style={{
+            width: 420, height: 420,
+            background: 'radial-gradient(circle,rgba(244,162,97,0.22) 0%,transparent 68%)',
+            top: -80, right: 60
+          }} />
 
           <div className="max-w-5xl mx-auto relative">
             <div className="text-center mb-12">
-              <p className="label-xs mb-3" style={{ color:'var(--accent)' }}>Platform Features</p>
-              <h2 className="text-3xl font-bold tracking-tight" style={{ letterSpacing:'-0.02em' }}>
+              <p className="label-xs mb-3" style={{ color: 'var(--accent)' }}>Platform Features</p>
+              <h2 className="text-3xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em' }}>
                 Built around real event workflows
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {features.map(({ icon: Icon, title, desc }, i) => (
-                <div key={title} className={`feat-card p-5 slide-up stagger-${Math.min(i+1,6)}`}>
+                <div key={title} className={`feat-card p-5 slide-up stagger-${Math.min(i + 1, 6)}`}>
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-4"
-                    style={{ background:'linear-gradient(135deg,var(--accent-light),var(--accent-mid))',
-                             border:'1px solid var(--accent-mid)' }}>
-                    <Icon className="w-4 h-4" style={{ color:'var(--accent)' }} />
+                    style={{
+                      background: 'linear-gradient(135deg,var(--accent-light),var(--accent-mid))',
+                      border: '1px solid var(--accent-mid)'
+                    }}>
+                    <Icon className="w-4 h-4" style={{ color: 'var(--accent)' }} />
                   </div>
                   <h3 className="font-semibold text-[15px] mb-1.5">{title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color:'var(--ink-3)' }}>{desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-3)' }}>{desc}</p>
                 </div>
               ))}
             </div>
@@ -530,21 +546,23 @@ export default function LandingPage() {
         </section>
 
         {/* ── Demo credentials ── */}
-        <section className="py-20 px-6 relative overflow-hidden" style={{ background:'var(--surface)' }}>
-          <div className="orb" style={{ width:460, height:460,
-            background:'radial-gradient(circle,rgba(229,116,49,0.22) 0%,transparent 68%)',
-            top:0, right:-80 }} />
+        <section className="py-20 px-6 relative overflow-hidden" style={{ background: 'var(--surface)' }}>
+          <div className="orb" style={{
+            width: 460, height: 460,
+            background: 'radial-gradient(circle,rgba(229,116,49,0.22) 0%,transparent 68%)',
+            top: 0, right: -80
+          }} />
 
           <div className="max-w-3xl mx-auto relative">
             <div className="text-center mb-12">
-              <p className="label-xs mb-3" style={{ color:'var(--accent)' }}>Demo Access</p>
-              <h2 className="text-3xl font-bold tracking-tight" style={{ letterSpacing:'-0.02em' }}>
+              <p className="label-xs mb-3" style={{ color: 'var(--accent)' }}>Demo Access</p>
+              <h2 className="text-3xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em' }}>
                 Try either role now
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {demos.map(({ role, email, pass, gradient, glow, perks }) => (
-                <Link key={role} href="/login" className="card card-hover p-5 group block" style={{ textDecoration:'none', color:'inherit' }}>
+                <Link key={role} href="/login" className="card card-hover p-5 group block" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{ background: gradient, boxShadow: `0 2px 8px ${glow}` }}>
@@ -553,24 +571,24 @@ export default function LandingPage() {
                     <div className="flex-1 flex items-center justify-between">
                       <span className="font-semibold text-[15px]">{role}</span>
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{ color:'var(--accent)' }} />
+                        style={{ color: 'var(--accent)' }} />
                     </div>
                   </div>
                   <div className="space-y-1.5 mb-4">
                     {perks.map(p => (
-                      <div key={p} className="flex items-center gap-2 text-sm" style={{ color:'var(--ink-2)' }}>
-                        <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color:'var(--green)' }} />{p}
+                      <div key={p} className="flex items-center gap-2 text-sm" style={{ color: 'var(--ink-2)' }}>
+                        <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--green)' }} />{p}
                       </div>
                     ))}
                   </div>
                   <div className="demo-code mono text-xs rounded-lg px-3 py-2.5 space-y-0.5">
                     <div className="flex gap-3">
-                      <span style={{ color:'var(--ink-4)' }}>email</span>
-                      <span style={{ color:'var(--ink-2)' }}>{email}</span>
+                      <span style={{ color: 'var(--ink-4)' }}>email</span>
+                      <span style={{ color: 'var(--ink-2)' }}>{email}</span>
                     </div>
                     <div className="flex gap-3">
-                      <span style={{ color:'var(--ink-4)' }}>pass </span>
-                      <span style={{ color:'var(--ink-2)' }}>{pass}</span>
+                      <span style={{ color: 'var(--ink-4)' }}>pass </span>
+                      <span style={{ color: 'var(--ink-2)' }}>{pass}</span>
                     </div>
                   </div>
                 </Link>
@@ -588,7 +606,7 @@ export default function LandingPage() {
               </div>
               <span className="font-semibold text-sm">EventOS</span>
             </div>
-            <span className="text-sm" style={{ color:'var(--ink-4)' }}>Built for hackathons. Designed to win.</span>
+            <span className="text-sm" style={{ color: 'var(--ink-4)' }}>Built for hackathons. Designed to win.</span>
           </div>
         </footer>
       </div>

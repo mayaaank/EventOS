@@ -1,13 +1,13 @@
 // Path: app/(dashboard)/participant/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
-import { Calendar, QrCode, Users, CheckCircle, Clock, MapPin, Loader2, Trophy, Bookmark, ArrowRight, Compass } from 'lucide-react'
+import { Calendar, QrCode, Users, CheckCircle, Clock, MapPin, Trophy, Bookmark, ArrowRight, Compass } from 'lucide-react'
 import Link from 'next/link'
 import { authService } from '@/services/auth.service'
 import { eventsService } from '@/services/events.service'
 import { registrationsService } from '@/services/registrations.service'
 import { Event, Registration, User } from '@/types'
-import { formatDate, timeUntil } from '@/lib/utils'
+import { timeUntil } from '@/lib/utils'
 
 export default function ParticipantDashboard() {
   const [user, setUser] = useState<User | null>(null)
@@ -50,7 +50,7 @@ export default function ParticipantDashboard() {
           Good morning, {user?.name?.split(' ')[0]} 👋
         </h1>
         <p className="text-sm" style={{ color: 'var(--ink-3)' }}>
-          Here's what's happening with your events
+          Here&apos;s what&apos;s happening with your events
         </p>
       </div>
 

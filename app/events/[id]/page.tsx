@@ -5,10 +5,10 @@ import Link from 'next/link'
 import {
 
   ArrowLeft, ArrowRight, Zap, Calendar, MapPin, Clock, Users,
-  Image as ImageIcon, Share2, ExternalLink, Trophy, Award, Star, Check,
+  Share2, Trophy, Award, Star, Check,
 } from 'lucide-react'
 import type { Event, User, Registration, LeaderboardEntry, EventCriteria, Score } from '@/types'
-import { formatDate, formatDateTime, timeUntil } from '@/lib/utils'
+import { formatDateTime, timeUntil } from '@/lib/utils'
 
 import { authService } from '@/services/auth.service'
 import { registrationsService } from '@/services/registrations.service'
@@ -643,7 +643,7 @@ export default function EventDetailPage() {
               </div>
             </div>
 
-          {/* ═══ Leaderboard ═══ */}
+            {/* ═══ Leaderboard ═══ */}
             <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 24px 48px' }}>
               <div style={{
                 borderRadius: 20, overflow: 'hidden',
@@ -671,230 +671,230 @@ export default function EventDetailPage() {
                     </p>
                   </div>
                 ) : (
-                <div style={{ padding: '8px 0' }}>
-                  {leaderboard.map((entry, i) => {
-                    const rank = i + 1
-                    const medals: Record<number, { bg: string; color: string; icon: string }> = {
-                      1: { bg: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#7A5600', icon: '🥇' },
-                      2: { bg: 'linear-gradient(135deg, #C0C0C0, #A8A8A8)', color: '#555', icon: '🥈' },
-                      3: { bg: 'linear-gradient(135deg, #CD7F32, #A0522D)', color: '#5C3317', icon: '🥉' },
-                    }
-                    const medal = medals[rank]
-                    return (
-                      <div key={entry.team_id} style={{
-                        display: 'flex', alignItems: 'center', gap: 16,
-                        padding: '14px 28px',
-                        borderBottom: i < leaderboard.length - 1 ? '1px solid var(--ink-6)' : 'none',
-                        background: rank <= 3 ? 'rgba(229,116,49,0.03)' : 'transparent',
-                      }}>
-                        {medal ? (
-                          <div style={{
-                            width: 36, height: 36, borderRadius: 10,
-                            background: medal.bg,
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 18, flexShrink: 0,
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-                          }}>
-                            {medal.icon}
-                          </div>
-                        ) : (
-                          <div style={{
-                            width: 36, height: 36, borderRadius: 10,
-                            background: 'var(--ink-6)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 14, fontWeight: 700, color: 'var(--ink-3)', flexShrink: 0,
-                          }}>
-                            {rank}
-                          </div>
-                        )}
-                        <div style={{ flex: 1 }}>
-                          <span style={{ fontWeight: 600, fontSize: 15 }}>
-                            {entry.team_name ?? entry.participant_name ?? 'Unknown'}
-                          </span>
-                          <span style={{ fontSize: 11, color: 'var(--ink-4)', marginLeft: 8 }}>
-                            {entry.judges_scored} judge{entry.judges_scored !== 1 ? 's' : ''} scored
-                          </span>
-                        </div>
-                        <div style={{
-                          display: 'flex', alignItems: 'center', gap: 6,
-                          padding: '6px 14px', borderRadius: 10,
-                          background: rank <= 3 ? 'var(--brand-pale)' : 'var(--ink-6)',
-                          border: rank <= 3 ? '1px solid var(--brand-mid)' : '1px solid var(--ink-5)',
+                  <div style={{ padding: '8px 0' }}>
+                    {leaderboard.map((entry, i) => {
+                      const rank = i + 1
+                      const medals: Record<number, { bg: string; color: string; icon: string }> = {
+                        1: { bg: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#7A5600', icon: '🥇' },
+                        2: { bg: 'linear-gradient(135deg, #C0C0C0, #A8A8A8)', color: '#555', icon: '🥈' },
+                        3: { bg: 'linear-gradient(135deg, #CD7F32, #A0522D)', color: '#5C3317', icon: '🥉' },
+                      }
+                      const medal = medals[rank]
+                      return (
+                        <div key={entry.team_id} style={{
+                          display: 'flex', alignItems: 'center', gap: 16,
+                          padding: '14px 28px',
+                          borderBottom: i < leaderboard.length - 1 ? '1px solid var(--ink-6)' : 'none',
+                          background: rank <= 3 ? 'rgba(229,116,49,0.03)' : 'transparent',
                         }}>
-                          <Star className="w-3.5 h-3.5" style={{ color: rank <= 3 ? 'var(--brand)' : 'var(--ink-3)' }} />
-                          <span style={{
-                            fontWeight: 700, fontSize: 15,
-                            color: rank <= 3 ? 'var(--brand-deep)' : 'var(--ink-2)',
+                          {medal ? (
+                            <div style={{
+                              width: 36, height: 36, borderRadius: 10,
+                              background: medal.bg,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontSize: 18, flexShrink: 0,
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                            }}>
+                              {medal.icon}
+                            </div>
+                          ) : (
+                            <div style={{
+                              width: 36, height: 36, borderRadius: 10,
+                              background: 'var(--ink-6)',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontSize: 14, fontWeight: 700, color: 'var(--ink-3)', flexShrink: 0,
+                            }}>
+                              {rank}
+                            </div>
+                          )}
+                          <div style={{ flex: 1 }}>
+                            <span style={{ fontWeight: 600, fontSize: 15 }}>
+                              {entry.team_name ?? entry.participant_name ?? 'Unknown'}
+                            </span>
+                            <span style={{ fontSize: 11, color: 'var(--ink-4)', marginLeft: 8 }}>
+                              {entry.judges_scored} judge{entry.judges_scored !== 1 ? 's' : ''} scored
+                            </span>
+                          </div>
+                          <div style={{
+                            display: 'flex', alignItems: 'center', gap: 6,
+                            padding: '6px 14px', borderRadius: 10,
+                            background: rank <= 3 ? 'var(--brand-pale)' : 'var(--ink-6)',
+                            border: rank <= 3 ? '1px solid var(--brand-mid)' : '1px solid var(--ink-5)',
                           }}>
-                            {entry.total_points}
-                          </span>
-                          <span style={{ fontSize: 11, color: 'var(--ink-4)' }}>pts</span>
+                            <Star className="w-3.5 h-3.5" style={{ color: rank <= 3 ? 'var(--brand)' : 'var(--ink-3)' }} />
+                            <span style={{
+                              fontWeight: 700, fontSize: 15,
+                              color: rank <= 3 ? 'var(--brand-deep)' : 'var(--ink-2)',
+                            }}>
+                              {entry.total_points}
+                            </span>
+                            <span style={{ fontSize: 11, color: 'var(--ink-4)' }}>pts</span>
+                          </div>
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                      )
+                    })}
+                  </div>
                 )}
               </div>
             </div>
 
-          {/* ═══ Judge Scoring Panel ═══ */}
-          {isJudge && criteria.length > 0 && (
-            <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 24px 48px' }}>
-              <div style={{
-                borderRadius: 20, overflow: 'hidden',
-                background: 'var(--white)', border: '1.5px solid var(--ink-6)',
-                boxShadow: 'var(--shadow-md)',
-              }}>
+            {/* ═══ Judge Scoring Panel ═══ */}
+            {isJudge && criteria.length > 0 && (
+              <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 24px 48px' }}>
                 <div style={{
-                  padding: '20px 28px',
-                  background: 'linear-gradient(135deg, #7C3AED, #5B21B6)',
-                  display: 'flex', alignItems: 'center', gap: 10,
+                  borderRadius: 20, overflow: 'hidden',
+                  background: 'var(--white)', border: '1.5px solid var(--ink-6)',
+                  boxShadow: 'var(--shadow-md)',
                 }}>
-                  <Award className="w-5 h-5" style={{ color: 'white' }} />
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>
-                    Judge Scoring Panel
-                  </h2>
-                </div>
-                <div style={{ padding: 24 }}>
-                  <p style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 20 }}>
-                    Select a {event?.type === 'TEAM' ? 'team' : 'participant'} and score them on each criterion (0–10 points)
-                  </p>
-
-                  {/* Target selector */}
-                  {scoringTargets.length === 0 ? (
-                    <div style={{
-                      padding: '20px 16px', borderRadius: 12,
-                      background: 'var(--surface)', border: '1px dashed var(--ink-5)',
-                      textAlign: 'center', color: 'var(--ink-3)', fontSize: 13,
-                    }}>
-                      No {event?.type === 'TEAM' ? 'teams' : 'participants'} yet. They will appear here once registered.
-                    </div>
-                  ) : (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
-                    {scoringTargets.map(t => {
-                      const targetScored = myScores.some(s => (event?.type === 'TEAM' ? s.team_id : s.participant_id) === t.id)
-                      const isActive = scoringTargetId === t.id
-                      return (
-                        <button key={t.id} onClick={() => {
-                          setScoringTargetId(t.id)
-                          // Pre-fill existing scores
-                          const existing: Record<string, number> = {}
-                          myScores.filter(s => (event?.type === 'TEAM' ? s.team_id : s.participant_id) === t.id).forEach(s => {
-                            existing[s.criteria_id] = s.points
-                          })
-                          setScoreInputs(prev => ({ ...prev, [t.id]: existing }))
-                        }}
-                          style={{
-                            padding: '8px 16px', borderRadius: 10, border: '1.5px solid',
-                            borderColor: isActive ? '#7C3AED' : targetScored ? 'var(--green)' : 'var(--ink-5)',
-                            background: isActive ? 'rgba(124,58,237,0.08)' : targetScored ? 'rgba(34,197,94,0.06)' : 'transparent',
-                            color: isActive ? '#7C3AED' : targetScored ? 'var(--green)' : 'var(--ink-2)',
-                            fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', gap: 6,
-                            transition: 'all 0.15s',
-                          }}
-                        >
-                          {targetScored && <Check className="w-3.5 h-3.5" />}
-                          {t.name}
-                        </button>
-                      )
-                    })}
+                  <div style={{
+                    padding: '20px 28px',
+                    background: 'linear-gradient(135deg, #7C3AED, #5B21B6)',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                  }}>
+                    <Award className="w-5 h-5" style={{ color: 'white' }} />
+                    <h2 style={{ fontSize: 18, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>
+                      Judge Scoring Panel
+                    </h2>
                   </div>
-                  )}
+                  <div style={{ padding: 24 }}>
+                    <p style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 20 }}>
+                      Select a {event?.type === 'TEAM' ? 'team' : 'participant'} and score them on each criterion (0–10 points)
+                    </p>
 
-                  {/* Scoring form */}
-                  {scoringTargetId && (
-                    <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 20 }}>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>
-                        Scoring: {scoringTargets.find(t => t.id === scoringTargetId)?.name}
-                      </h3>
-                      <div style={{ display: 'grid', gap: 12 }}>
-                        {criteria.map(c => {
-                          const val = scoreInputs[scoringTargetId]?.[c.id] ?? 0
+                    {/* Target selector */}
+                    {scoringTargets.length === 0 ? (
+                      <div style={{
+                        padding: '20px 16px', borderRadius: 12,
+                        background: 'var(--surface)', border: '1px dashed var(--ink-5)',
+                        textAlign: 'center', color: 'var(--ink-3)', fontSize: 13,
+                      }}>
+                        No {event?.type === 'TEAM' ? 'teams' : 'participants'} yet. They will appear here once registered.
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
+                        {scoringTargets.map(t => {
+                          const targetScored = myScores.some(s => (event?.type === 'TEAM' ? s.team_id : s.participant_id) === t.id)
+                          const isActive = scoringTargetId === t.id
                           return (
-                            <div key={c.id} style={{
-                              display: 'flex', alignItems: 'center', gap: 16,
-                              padding: '12px 16px', borderRadius: 12,
-                              background: 'var(--white)', border: '1px solid var(--ink-6)',
-                            }}>
-                              <span style={{ flex: 1, fontSize: 14, fontWeight: 500 }}>{c.name}</span>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <input
-                                  type="range" min={0} max={c.max_points} value={val}
-                                  onChange={e => {
-                                    const v = parseInt(e.target.value)
-                                    setScoreInputs(prev => ({
-                                      ...prev,
-                                      [scoringTargetId]: { ...(prev[scoringTargetId] ?? {}), [c.id]: v },
-                                    }))
-                                  }}
-                                  style={{ width: 120, accentColor: '#7C3AED' }}
-                                />
-                                <span style={{
-                                  width: 36, textAlign: 'center',
-                                  fontWeight: 700, fontSize: 16, color: '#7C3AED',
-                                }}>
-                                  {val}
-                                </span>
-                                <span style={{ fontSize: 11, color: 'var(--ink-4)' }}>/{c.max_points}</span>
-                              </div>
-                            </div>
+                            <button key={t.id} onClick={() => {
+                              setScoringTargetId(t.id)
+                              // Pre-fill existing scores
+                              const existing: Record<string, number> = {}
+                              myScores.filter(s => (event?.type === 'TEAM' ? s.team_id : s.participant_id) === t.id).forEach(s => {
+                                existing[s.criteria_id] = s.points
+                              })
+                              setScoreInputs(prev => ({ ...prev, [t.id]: existing }))
+                            }}
+                              style={{
+                                padding: '8px 16px', borderRadius: 10, border: '1.5px solid',
+                                borderColor: isActive ? '#7C3AED' : targetScored ? 'var(--green)' : 'var(--ink-5)',
+                                background: isActive ? 'rgba(124,58,237,0.08)' : targetScored ? 'rgba(34,197,94,0.06)' : 'transparent',
+                                color: isActive ? '#7C3AED' : targetScored ? 'var(--green)' : 'var(--ink-2)',
+                                fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', gap: 6,
+                                transition: 'all 0.15s',
+                              }}
+                            >
+                              {targetScored && <Check className="w-3.5 h-3.5" />}
+                              {t.name}
+                            </button>
                           )
                         })}
                       </div>
-                      <button
-                        disabled={submittingScores}
-                        onClick={async () => {
-                          setSubmittingScores(true)
-                          const scores = criteria.map(c => ({
-                            criteria_id: c.id,
-                            points: scoreInputs[scoringTargetId]?.[c.id] ?? 0,
-                          }))
-                          const payload = event?.type === 'TEAM' 
-                            ? { team_id: scoringTargetId, scores } 
-                            : { participant_id: scoringTargetId, scores }
+                    )}
 
-                          const res = await fetch(`/api/events/${id}/scores`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload),
-                          }).then(r => r.json())
-                          if (res.success) {
-                            // Refresh scores and leaderboard
-                            const [scoresRes, lbRes] = await Promise.all([
-                              fetch(`/api/events/${id}/scores`).then(r => r.json()),
-                              fetch(`/api/events/${id}/leaderboard`).then(r => r.json()),
-                            ])
-                            if (scoresRes.data) setMyScores(scoresRes.data)
-                            if (lbRes.data) setLeaderboard(lbRes.data)
-                            alert('Scores submitted!')
-                          } else {
-                            alert(res.error ?? 'Failed to submit scores')
-                          }
-                          setSubmittingScores(false)
-                        }}
-                        style={{
-                          marginTop: 20, width: '100%', padding: '12px 24px', borderRadius: 12,
-                          background: 'linear-gradient(135deg, #7C3AED, #5B21B6)',
-                          color: 'white', fontWeight: 700, fontSize: 14,
-                          border: 'none', cursor: 'pointer',
-                          opacity: submittingScores ? 0.6 : 1,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                          boxShadow: '0 4px 16px rgba(124,58,237,0.3)',
-                          transition: 'opacity 0.15s, transform 0.15s',
-                        }}
-                        onMouseEnter={e => { if (!submittingScores) e.currentTarget.style.transform = 'translateY(-1px)' }}
-                        onMouseLeave={e => { e.currentTarget.style.transform = 'none' }}
-                      >
-                        {submittingScores ? 'Submitting…' : 'Submit Scores'}
-                      </button>
-                    </div>
-                  )}
+                    {/* Scoring form */}
+                    {scoringTargetId && (
+                      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 20 }}>
+                        <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>
+                          Scoring: {scoringTargets.find(t => t.id === scoringTargetId)?.name}
+                        </h3>
+                        <div style={{ display: 'grid', gap: 12 }}>
+                          {criteria.map(c => {
+                            const val = scoreInputs[scoringTargetId]?.[c.id] ?? 0
+                            return (
+                              <div key={c.id} style={{
+                                display: 'flex', alignItems: 'center', gap: 16,
+                                padding: '12px 16px', borderRadius: 12,
+                                background: 'var(--white)', border: '1px solid var(--ink-6)',
+                              }}>
+                                <span style={{ flex: 1, fontSize: 14, fontWeight: 500 }}>{c.name}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                  <input
+                                    type="range" min={0} max={c.max_points} value={val}
+                                    onChange={e => {
+                                      const v = parseInt(e.target.value)
+                                      setScoreInputs(prev => ({
+                                        ...prev,
+                                        [scoringTargetId]: { ...(prev[scoringTargetId] ?? {}), [c.id]: v },
+                                      }))
+                                    }}
+                                    style={{ width: 120, accentColor: '#7C3AED' }}
+                                  />
+                                  <span style={{
+                                    width: 36, textAlign: 'center',
+                                    fontWeight: 700, fontSize: 16, color: '#7C3AED',
+                                  }}>
+                                    {val}
+                                  </span>
+                                  <span style={{ fontSize: 11, color: 'var(--ink-4)' }}>/{c.max_points}</span>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                        <button
+                          disabled={submittingScores}
+                          onClick={async () => {
+                            setSubmittingScores(true)
+                            const scores = criteria.map(c => ({
+                              criteria_id: c.id,
+                              points: scoreInputs[scoringTargetId]?.[c.id] ?? 0,
+                            }))
+                            const payload = event?.type === 'TEAM'
+                              ? { team_id: scoringTargetId, scores }
+                              : { participant_id: scoringTargetId, scores }
+
+                            const res = await fetch(`/api/events/${id}/scores`, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify(payload),
+                            }).then(r => r.json())
+                            if (res.success) {
+                              // Refresh scores and leaderboard
+                              const [scoresRes, lbRes] = await Promise.all([
+                                fetch(`/api/events/${id}/scores`).then(r => r.json()),
+                                fetch(`/api/events/${id}/leaderboard`).then(r => r.json()),
+                              ])
+                              if (scoresRes.data) setMyScores(scoresRes.data)
+                              if (lbRes.data) setLeaderboard(lbRes.data)
+                              alert('Scores submitted!')
+                            } else {
+                              alert(res.error ?? 'Failed to submit scores')
+                            }
+                            setSubmittingScores(false)
+                          }}
+                          style={{
+                            marginTop: 20, width: '100%', padding: '12px 24px', borderRadius: 12,
+                            background: 'linear-gradient(135deg, #7C3AED, #5B21B6)',
+                            color: 'white', fontWeight: 700, fontSize: 14,
+                            border: 'none', cursor: 'pointer',
+                            opacity: submittingScores ? 0.6 : 1,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                            boxShadow: '0 4px 16px rgba(124,58,237,0.3)',
+                            transition: 'opacity 0.15s, transform 0.15s',
+                          }}
+                          onMouseEnter={e => { if (!submittingScores) e.currentTarget.style.transform = 'translateY(-1px)' }}
+                          onMouseLeave={e => { e.currentTarget.style.transform = 'none' }}
+                        >
+                          {submittingScores ? 'Submitting…' : 'Submit Scores'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
           </div>
         )}

@@ -2,6 +2,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createBrowserClient } from '@/lib/supabase/client'
 import { authService } from '@/services/auth.service'
 import { User } from '@/types'
 import Sidebar from '@/components/shared/Sidebar'
@@ -12,11 +13,43 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    authService.getCurrentUser().then(currentUser => {
-      if (!currentUser) { router.replace('/login'); return }
-      setUser(currentUser)
-      setLoading(false)
-    })
+    const supabase = createBrowserClient()
+    let mounted = true
+
+    // ── onAuthStateChange is the single source of truth ──────────────────────
+    // Fires immediately with INITIAL_SESSION — no separate getSession() needed.
+    // Eliminates the race condition where getSession() resolved before the
+    // session cookie from login/register was fully written to the browser.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!mounted) return
+
+        if (event === 'INITIAL_SESSION') {
+          if (!session) {
+            router.replace('/login')
+            return
+          }
+          const profile = await authService.getCurrentUser()
+          if (!profile) { router.replace('/login'); return }
+          setUser(profile)
+          setLoading(false)
+          return
+        }
+
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          const profile = await authService.getCurrentUser()
+          if (profile) { setUser(profile); setLoading(false) }
+          return
+        }
+
+        if (event === 'SIGNED_OUT') {
+          setUser(null)
+          router.replace('/login')
+        }
+      }
+    )
+
+    return () => { mounted = false; subscription.unsubscribe() }
   }, [router])
 
   if (loading) return (

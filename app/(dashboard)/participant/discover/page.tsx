@@ -1,7 +1,6 @@
 // Path: app/(dashboard)/participant/discover/page.tsx
 'use client'
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState, useMemo } from 'react'
 import { Calendar, MapPin, Clock, Users, CheckCircle, Loader2, Plus, Search, Zap } from 'lucide-react'
 
 import { authService } from '@/services/auth.service'
@@ -20,6 +19,7 @@ export default function ParticipantDiscoverPage() {
   const [registering, setRegistering] = useState<string | null>(null)
   const [toast, setToast] = useState('')
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
 
   useEffect(() => {
@@ -55,14 +55,91 @@ export default function ParticipantDiscoverPage() {
     setTimeout(() => setToast(''), 5000)
   }
 
+  // --- DSA Concept: Inverted Index & Prefix Search ---
+  // We build an inverted index (Map) mapping word prefixes to Sets of Event IDs.
+  // This allows O(1) lookup per token, avoiding O(N * M) string matching on every search keystroke.
+  const searchIndex = useMemo(() => {
+    const index = new Map<string, Set<string>>()
+
+    const addTokens = (text: string, eventId: string) => {
+      // Split by non-alphanumeric characters and lowercase
+      const tokens = text.toLowerCase().split(/[^a-z0-9]+/i).filter(Boolean)
+
+      // Generate expanding prefixes for each token to support partial matching
+      for (const token of tokens) {
+        let prefix = ''
+        for (const char of token) {
+          prefix += char
+          if (!index.has(prefix)) {
+            index.set(prefix, new Set())
+          }
+          index.get(prefix)!.add(eventId)
+        }
+      }
+    }
+
+    events.forEach(e => {
+      addTokens(e.title, e.id)
+      addTokens(e.location, e.id)
+      addTokens(e.type, e.id)
+      e.tags.forEach(t => addTokens(t, e.id))
+    })
+
+    return index
+  }, [events])
+
+  // Debounce search input to avoid recalculating on every keystroke
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [search])
+
   const registeredIds = new Set(myRegs.map(r => r.event_id))
 
-  const filtered = events.filter(e =>
-  (!search ||
-    e.title.toLowerCase().includes(search.toLowerCase()) ||
-    e.location.toLowerCase().includes(search.toLowerCase()) ||
-    e.tags.some(t => t.toLowerCase().includes(search.toLowerCase())))
-  )
+  const filtered = useMemo(() => {
+    let result = events
+
+    // 1. Text Search utilizing Inverted Index (Fast lookup)
+    const query = debouncedSearch.trim().toLowerCase()
+    if (query) {
+      const tokens = query.split(/[^a-z0-9]+/i).filter(Boolean)
+
+      if (tokens.length > 0) {
+        // Intersect sets for multi-word queries
+        let matchingIds: Set<string> | null = null
+
+        for (const token of tokens) {
+          const itemSet = searchIndex.get(token) || new Set<string>()
+          if (matchingIds === null) {
+            matchingIds = new Set(itemSet)
+          } else {
+            // Intersection
+            matchingIds = new Set(Array.from<string>(matchingIds).filter(id => itemSet.has(id)))
+          }
+        }
+
+        result = result.filter(e => matchingIds!.has(e.id))
+      }
+    }
+
+    // 2. Category Filter
+    if (activeFilter !== 'All') {
+      result = result.filter(e => {
+        const titleWords = e.title.toLowerCase()
+        const tags = e.tags.map(t => t.toLowerCase())
+        if (activeFilter === 'Online') return e.location.toLowerCase().includes('online') || tags.includes('online')
+        if (activeFilter === 'Hackathons') return titleWords.includes('hackathon') || tags.includes('hackathon')
+        if (activeFilter === 'Workshops') return titleWords.includes('workshop') || tags.includes('workshop')
+        if (activeFilter === 'Meetups') return titleWords.includes('meetup') || tags.includes('meetup')
+        if (activeFilter === 'Free') return tags.includes('free')
+        return true
+      })
+    }
+
+    return result
+  }, [events, debouncedSearch, activeFilter, searchIndex])
 
   return (
     <div className="p-8 max-w-6xl">

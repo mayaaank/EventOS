@@ -5,10 +5,10 @@ import Link from 'next/link'
 import {
 
   ArrowLeft, ArrowRight, Zap, Calendar, MapPin, Clock, Users,
-  Image as ImageIcon, Share2, ExternalLink, Trophy, Award, Star, Check,
+  Share2, Trophy, Award, Star, Check,
 } from 'lucide-react'
 import type { Event, User, Registration, LeaderboardEntry, EventCriteria, Score } from '@/types'
-import { formatDate, formatDateTime, timeUntil } from '@/lib/utils'
+import { formatDateTime, timeUntil } from '@/lib/utils'
 
 import { authService } from '@/services/auth.service'
 import { registrationsService } from '@/services/registrations.service'

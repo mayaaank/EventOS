@@ -1,6 +1,7 @@
 // Path: app/(dashboard)/participant/discover/page.tsx
 'use client'
 import { useEffect, useState, useMemo } from 'react'
+import Link from 'next/link'
 import { Calendar, MapPin, Clock, Users, CheckCircle, Loader2, Plus, Search, Zap } from 'lucide-react'
 
 import { authService } from '@/services/auth.service'
@@ -250,8 +251,8 @@ export default function ParticipantDiscoverPage() {
 
                   <Link href={`/events/${event.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <h3 className="font-bold text-[15px] mb-2 line-clamp-2 leading-snug" style={{ cursor: 'pointer', transition: 'color 0.15s' }}
-                      onMouseEnter={e => e.currentTarget.style.color = 'var(--brand)'}
-                      onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>{event.title}</h3>
+                      onMouseEnter={(e: React.MouseEvent<HTMLHeadingElement>) => e.currentTarget.style.color = 'var(--brand)'}
+                      onMouseLeave={(e: React.MouseEvent<HTMLHeadingElement>) => e.currentTarget.style.color = 'inherit'}>{event.title}</h3>
                   </Link>
 
                   <div className="space-y-1.5 mb-3">
@@ -293,8 +294,8 @@ export default function ParticipantDiscoverPage() {
                         border: '1px solid var(--brand-soft)', textDecoration: 'none',
                         transition: 'background 0.15s',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand-soft)' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'var(--brand-pale)' }}
+                      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.background = 'var(--brand-soft)' }}
+                      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.background = 'var(--brand-pale)' }}
                     >
                       View Details
                     </Link>

@@ -6,7 +6,8 @@ import {
   GitBranch, Check, Calendar, MapPin, ChevronDown,
   ChevronLeft, ChevronRight as ChevronRightIcon
 } from 'lucide-react'
-import { Event } from '@/types'
+import { authService } from '@/services/auth.service'
+import { Event, User } from '@/types'
 import { formatDate } from '@/lib/utils'
 
 /* ─── CSS overrides (same fonts, new palette + blur effects) ─────────────── */
@@ -299,6 +300,7 @@ function SkeletonCard() {
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
+  const [user, setUser] = useState<User | null>(null)
   const [events, setEvents] = useState<Event[]>([])
   const [evLoading, setEvLoading] = useState(true)
   const eventsRef = useRef<HTMLElement>(null)
@@ -307,6 +309,8 @@ export default function LandingPage() {
   const [canScrollRight, setCanScrollRight] = useState(false)
 
   useEffect(() => {
+    authService.getCurrentUser().then(setUser)
+
     Promise.all([
       fetch('/api/events?status=PUBLISHED').then(r => r.json()),
       fetch('/api/events?status=ONGOING').then(r => r.json()),
@@ -354,10 +358,18 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center gap-2">
               <button onClick={scrollToEvents} className="btn btn-ghost px-4 py-2 text-sm">Browse Events</button>
-              <Link href="/login" className="btn btn-ghost px-4 py-2 text-sm">Sign in</Link>
-              <Link href="/register" className="btn btn-primary px-4 py-2 text-sm">
-                Get started <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              {user ? (
+                <Link href={user.role === 'ORGANIZER' ? '/organizer' : '/participant/discover'} className="btn btn-primary px-4 py-2 text-sm">
+                  Go to Dashboard <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="btn btn-ghost px-4 py-2 text-sm">Sign in</Link>
+                  <Link href="/register" className="btn btn-primary px-4 py-2 text-sm">
+                    Get started <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </nav>
@@ -403,7 +415,13 @@ export default function LandingPage() {
               <button onClick={scrollToEvents} className="btn btn-primary px-6 py-3 text-[15px]">
                 Browse events <ChevronDown className="w-4 h-4" />
               </button>
-              <Link href="/login" className="btn btn-secondary px-6 py-3 text-[15px]">Sign in</Link>
+              {user ? (
+                <Link href={user.role === 'ORGANIZER' ? '/organizer' : '/participant/discover'} className="btn btn-secondary px-6 py-3 text-[15px]">
+                  Go to Dashboard
+                </Link>
+              ) : (
+                <Link href="/login" className="btn btn-secondary px-6 py-3 text-[15px]">Sign in</Link>
+              )}
             </div>
           </div>
         </section>

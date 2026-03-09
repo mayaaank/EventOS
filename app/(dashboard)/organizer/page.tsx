@@ -3,13 +3,16 @@
 
 import { useEffect, useState, useCallback } from 'react'
 
-import { Plus, X, Loader2, Calendar, MapPin, Users, BarChart3, Upload, Award, Search, Check } from 'lucide-react'
+import { Plus, X, Loader2, Calendar, MapPin, Users, BarChart3, Upload, Award, Search, Check, Star, Clock } from 'lucide-react'
+
 
 
 import { eventsService } from '@/services/events.service'
 import { authService } from '@/services/auth.service'
 import { Event, CreateEventPayload, EventType, EventAnalytics, User, EventJudge, JUDGING_CRITERIA } from '@/types'
 import { formatDate } from '@/lib/utils'
+
+interface ReviewStats { review_count: number; avg_rating: number }
 
 const STATUS_BADGE: Record<string, string> = {
   DRAFT: 'badge-neutral', PUBLISHED: 'badge-blue',
@@ -38,6 +41,7 @@ export default function OrganizerPage() {
   const [user, setUser] = useState<User | null>(null)
   const [events, setEvents] = useState<Event[]>([])
   const [analytics, setAnalytics] = useState<Record<string, EventAnalytics>>({})
+  const [reviewStats, setReviewStats] = useState<Record<string, ReviewStats>>({})
   const [loading, setLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
   const [form, setForm] = useState<CreateEventPayload>(defaultForm)
@@ -65,13 +69,31 @@ export default function OrganizerPage() {
     setLoading(true)
     // Only fetch events created by this user
     const res = await eventsService.getAll({ created_by: u.id })
-    setEvents(res.data ?? [])
+    const allEvents: Event[] = res.data ?? []
+    setEvents(allEvents)
+    // Fetch analytics + review stats in parallel
     const map: Record<string, EventAnalytics> = {}
-    await Promise.all((res.data ?? []).map(async (e: Event) => {
-      const a = await eventsService.getAnalytics(e.id)
-      if (a.data) map[e.id] = a.data
-    }))
+    const revMap: Record<string, ReviewStats> = {}
+    await Promise.all([
+      ...allEvents.map(async (e: Event) => {
+        const a = await eventsService.getAnalytics(e.id)
+        if (a.data) map[e.id] = a.data
+      }),
+      ...allEvents.filter(e => e.status === 'COMPLETED').map(async (e: Event) => {
+        try {
+          const r = await fetch(`/api/reviews?event_id=${e.id}`).then(x => x.json())
+          if (r.data && r.data.length > 0) {
+            const ratings = r.data.map((rv: { rating: number }) => rv.rating)
+            revMap[e.id] = {
+              review_count: ratings.length,
+              avg_rating: Math.round((ratings.reduce((s: number, v: number) => s + v, 0) / ratings.length) * 10) / 10,
+            }
+          }
+        } catch { /* ignore */ }
+      }),
+    ])
     setAnalytics(map)
+    setReviewStats(revMap)
     setLoading(false)
   }, [user])
 
@@ -174,9 +196,11 @@ export default function OrganizerPage() {
     alert('Criteria saved!')
   }
 
+  const activeEvents = events.filter(e => !['COMPLETED', 'CANCELLED'].includes(e.status))
+  const pastEvents = events.filter(e => ['COMPLETED', 'CANCELLED'].includes(e.status))
   const totalRegs = events.reduce((s, e) => s + (e.registration_count ?? 0), 0)
   const totalCheckin = events.reduce((s, e) => s + (e.checkin_count ?? 0), 0)
-  const active = events.filter(e => ['PUBLISHED', 'ONGOING'].includes(e.status)).length
+  const active = activeEvents.filter(e => ['PUBLISHED', 'ONGOING'].includes(e.status)).length
 
   return (
     <div className="p-8 max-w-6xl">
@@ -222,8 +246,11 @@ export default function OrganizerPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          {events.map((event, i) => {
+        <>
+        {/* ── Active Events ── */}
+        {activeEvents.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-10">
+          {activeEvents.map((event, i) => {
             const a = analytics[event.id]
             const fill = Math.min(((event.registration_count ?? 0) / event.max_participants) * 100, 100)
             return (
@@ -306,6 +333,70 @@ export default function OrganizerPage() {
             )
           })}
         </div>
+        )}
+
+        {/* ── Past Events ── */}
+        {pastEvents.length > 0 && (
+          <section>
+            <div className="flex items-center gap-2 mb-4">
+              <Clock className="w-4 h-4" style={{ color: 'var(--ink-3)' }} />
+              <h2 className="text-lg font-bold tracking-tight">Past Events</h2>
+              <span className="text-xs font-medium ml-1" style={{ color: 'var(--ink-4)' }}>({pastEvents.length})</span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              {pastEvents.map((event, i) => {
+                const rvs = reviewStats[event.id]
+                return (
+                  <div key={event.id} className="card bg-white p-5 slide-up" style={{ animationDelay: `${i * 0.06}s`, opacity: 0.92 }}>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1 min-w-0 pr-3">
+                        <h3 className="font-bold text-[15px] mb-2">{event.title}</h3>
+                        <div className="flex gap-1.5 flex-wrap">
+                          <span className={`badge ${STATUS_BADGE[event.status]}`}>{event.status}</span>
+                          <span className="badge badge-neutral">{event.type}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-1.5 mb-3">
+                      <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--ink-3)' }}>
+                        <MapPin className="w-3 h-3 flex-shrink-0" />{event.location}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--ink-3)' }}>
+                        <Calendar className="w-3 h-3 flex-shrink-0" />{formatDate(event.start_date)} → {formatDate(event.end_date)}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--ink-3)' }}>
+                        <Users className="w-3 h-3 flex-shrink-0" />{event.registration_count ?? 0} participants
+                      </div>
+                    </div>
+                    {/* Review stats */}
+                    {event.status === 'COMPLETED' && (
+                      <div className="pt-3 flex items-center gap-3" style={{ borderTop: '1px solid var(--border)' }}>
+                        {rvs ? (
+                          <>
+                            <div className="flex items-center gap-1">
+                              {[1, 2, 3, 4, 5].map(s => (
+                                <Star key={s} style={{
+                                  width: 14, height: 14,
+                                  fill: s <= Math.round(rvs.avg_rating) ? '#F59E0B' : 'transparent',
+                                  color: s <= Math.round(rvs.avg_rating) ? '#F59E0B' : 'var(--ink-4)',
+                                }} />
+                              ))}
+                            </div>
+                            <span className="text-xs font-semibold" style={{ color: '#92400E' }}>{rvs.avg_rating}</span>
+                            <span className="text-xs" style={{ color: 'var(--ink-3)' }}>{rvs.review_count} review{rvs.review_count !== 1 ? 's' : ''}</span>
+                          </>
+                        ) : (
+                          <span className="text-xs" style={{ color: 'var(--ink-4)' }}>No reviews yet</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        )}
+        </>
       )}
       {/* ── Manage Judges & Criteria Modal ── */}
       {manageEventId && (
